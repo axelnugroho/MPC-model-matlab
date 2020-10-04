@@ -1,0 +1,33 @@
+clear;clc;
+%% System Model
+disp('=== System Model ===');
+num_str = input('Numerator     = ','s');
+den_str = input('Denominator   = ','s');
+Ts      = input('Time sampling = ');
+num = str2num(num_str);
+den = str2num(den_str);
+%% MPC
+disp(' ');
+disp('=== MPC MODEL ===');
+disp('Nc is horizon control');
+disp('Np is horizon predictive');
+disp('k is gain system');
+Nc = input('Nc = ');
+Np = input('Np = ');
+k  = input('k  = ');
+[Phi_Phi, Phi_F, Phi_R, eye_Nc] = mpc_model(num, den, Ts, Nc, Np);
+Keye_Nc = k*eye_Nc;
+disp(' ');
+disp('model MPC = ((Phi_Phi+k*eye(Nc,Nc))*(Phi_R*r(i)-Phi_F*Xf))^(-1)');
+disp('r(i): input system');
+disp('k   : gain system');
+disp('Xf  : delta error sensor');
+disp(' ');
+disp('Phi_Phi = ');
+disp(Phi_Phi);
+disp('Phi_F = ');
+disp(Phi_F);
+disp('Phi_R = ');
+disp(Phi_R);
+disp('k*eye(Nc,Nc) = ');
+disp(Keye_Nc);
