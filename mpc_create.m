@@ -15,6 +15,7 @@ disp('k is gain system');
 Nc = input('Nc = ');
 Np = input('Np = ');
 k  = input('k  = ');
+disp(' ');
 disp('=== DISPLAY ===');
 disp('only can display SISO system');
 display = input('YES/NO : ','s');
