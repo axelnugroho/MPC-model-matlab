@@ -1,4 +1,4 @@
-function [Phi_Phi, Phi_F, Phi_R, eyeNc] = mpc_model(num_c, den_c, Delta_t, Nc, Np)
+function [Phi_Phi, Phi_F, Phi_R, eyeNc] = mpc_model(num_c, den_c, Delta_t, Nc, Np, display)
 [Ap,Bp,Cp,Dp]=tf2ss(num_c,den_c);
 Delta_t=0.01;
 [Ad,Bd,Cd,Dd]=c2dm(Ap,Bp,Cp,Dp,Delta_t);
@@ -32,4 +32,32 @@ Phi_Phi= Phi'*Phi;
 Phi_F= Phi'*F;
 Phi_R=Phi'*BarRs;
 eyeNc = eye(Nc,Nc);
+
+if display=='YES'
+[n,n_in]=size(B_e);
+xm=zeros(n1,1);
+Xf=zeros(n,1);
+N_sim=100;
+r=ones(N_sim,1);
+u=0;
+y=0;
+for kk=1:N_sim;
+DeltaU=inv(Phi_Phi+0.1*eye(Nc,Nc))*(Phi_R*r(kk)-Phi_F*Xf);
+deltau=DeltaU(1,1);
+u=u+deltau;
+u1(kk)=u;
+y1(kk)=y;
+xm_old=xm;
+xm=Ad.*xm+Bd.*u;
+y=Cd*xm+Dd*u;
+Xf=[xm-xm_old;y];
+end
+
+for i = 0:99
+    k(i+1) = i * Delta_t;
+end
+figure
+plot(k,y1)
+grid;
+end
 end
