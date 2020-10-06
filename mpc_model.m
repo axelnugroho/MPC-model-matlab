@@ -33,7 +33,7 @@ Phi_F= Phi'*F;
 Phi_R=Phi'*BarRs;
 eyeNc = eye(Nc,Nc);
 
-if display=='YES'
+if (display==1)
 [n,n_in]=size(B_e);
 xm=zeros(n1,1);
 Xf=zeros(n,1);
